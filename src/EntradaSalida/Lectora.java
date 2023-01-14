@@ -133,7 +133,27 @@ public class Lectora {
         return cracterIntroducido;
     }
 
-    public static String solicitarCadena(String mensaje) {
+    public static String solicitarCadenaMayus(String mensaje) {
+        String cadena = "";
+        boolean ok = true;
+
+        while (ok) {
+            System.out.println(mensaje);
+            try {
+                cadena = sc.nextLine().toUpperCase();
+                if (cadena.length() > 0) {
+                    // Si llegamos hasta aquí, es porque el usuario ha introducido un dato correcto y no se ha lanzado ninguna excepción.
+                    ok = false;
+                }
+            } catch (NoSuchElementException e) {
+                System.out.println("No has introducido elementos");
+            }
+        }
+
+        return cadena;
+    }
+
+    public static String solicitarCadenaMinus(String mensaje) {
         String cadena = "";
         boolean ok = true;
 

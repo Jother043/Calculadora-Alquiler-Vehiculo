@@ -7,12 +7,13 @@ public abstract class  Vehiculo {
      */
     public enum GamaCoche{
         BAJA(30), MEDIA(40), ALTA(50);
-        double precioPorGama;
-
+        //Creamos la variable precioPorGama.
+        private double precioPorGama;
+        //Creamos un constructor del enum de gamas.
         GamaCoche(double precioPorGama) {
             this.precioPorGama = precioPorGama;
         }
-
+        //Creamos un getter para obtener el precio por gama.
         public double getPrecioPorGama() {
             return precioPorGama;
         }
@@ -29,7 +30,7 @@ public abstract class  Vehiculo {
     Creamos los atributos gama, carburante y matricula.
      */
 
-    private GamaCoche gama;
+    private static GamaCoche gama;
     private Carburante carburante;
     private String matricula;
 
@@ -46,7 +47,7 @@ public abstract class  Vehiculo {
             throw new AlquilerVehiculosException("Error falta matricula del vehiculo. ");
         }
 
-        if(gama == null || carburante == null ){
+        if(gama == null || carburante == null){
             throw new AlquilerVehiculosException("Error hay datos que no se han contemplado. ");
         }
     }
@@ -77,10 +78,17 @@ public abstract class  Vehiculo {
      * @return
      * @throws AlquilerVehiculosException
      */
-    public double getPrecioPorDia(int numDias) throws AlquilerVehiculosException {
+    public static double getPrecioPorDia(int numDias) throws AlquilerVehiculosException {
         if(numDias < 1){
             throw new AlquilerVehiculosException("Error el alquiler del vehiculo no puede ser 0 dias. ");
         }
         return gama.getPrecioPorGama()*numDias;
+    }
+
+    @Override
+    public String toString() {
+        return "gama=" + gama +
+                ", carburante=" + carburante +
+                ", matricula='" + matricula + '\'';
     }
 }

@@ -25,4 +25,9 @@ public class Coche extends Vehiculo {
         return getPrecioBase() + sumaPrecio;
     }
 
+    @Override
+    public String toString() {
+        return "Coche: " +
+                super.toString() ;
+    }
 }
