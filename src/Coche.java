@@ -7,8 +7,12 @@ public class Coche extends Vehiculo {
         super(gama, carburante, matricula);
     }
 
+    /**
+     * Método sobreescrito que nos devuelve el precio de cada caso.
+     * @return
+     */
     @Override
-    public double getPrecioBase() throws AlquilerVehiculosException{
+    public double getPrecioBase(){
         double sumaPrecio = 0;
 
         switch (this.getCarburante()){
@@ -18,8 +22,6 @@ public class Coche extends Vehiculo {
             case GASOLINA:
                 sumaPrecio = PRECIO_GASOLINA;
                 break;
-            default:
-                throw new AlquilerVehiculosException("Tienes que elegir entre gasoil o gasolina. ");
         }
 
         return  + sumaPrecio;

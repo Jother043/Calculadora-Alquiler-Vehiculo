@@ -65,10 +65,12 @@ public abstract class  Vehiculo {
     }
 
     /**
-     * El precio base es el retorno de precio por gama.
-     * @return gama.getPrecioPorGama();
+     * Método abstracto.
+     * @return getPrecioBase();
      */
-
+    public double getPrecioBase() throws AlquilerVehiculosException {
+        return  getPrecioBase();
+    }
 
     /**
      * Este método se encarga de calcular el precio por dia
@@ -81,10 +83,6 @@ public abstract class  Vehiculo {
             throw new AlquilerVehiculosException("Error el alquiler del vehiculo no puede ser 0 dias. ");
         }
         return gama.getPrecioPorDia()*numDias;
-    }
-
-    public double getPrecioBase() throws AlquilerVehiculosException {
-        return gama.getPrecioPorDia();
     }
 
     @Override

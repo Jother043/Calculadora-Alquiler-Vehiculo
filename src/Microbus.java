@@ -13,12 +13,21 @@ public class Microbus extends Vehiculo{
             this.plazas = plazas;
         }
 
-        @Override
-        public  double getPrecioBase() throws AlquilerVehiculosException {
+    /**
+     * Método que nos devuelve el producto del precio de una plaza por las elegidas por el usuario.
+     * @return
+     */
+    @Override
+        public  double getPrecioBase()  {
             return (5 * plazas);
         }
 
-        public static boolean validarPlazas(int plazas) {
+    /**
+     * Método que nos valida que la plaza no se exceda se un mínimo y un máximo.
+     * @param plazas
+     * @return
+     */
+    public static boolean validarPlazas(int plazas) {
             return (plazas > 0 && plazas < PLAZAS_MAX);
         }
 

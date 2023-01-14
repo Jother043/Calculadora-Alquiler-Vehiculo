@@ -12,11 +12,21 @@ public class Furgoneta extends Vehiculo {
         this.pma = pma;
     }
 
+    /**
+     * Método que devuelve el producto del pma por 0,5 del plus por peso
+     * para después en el main sumárselo al precio por dias según gama.
+     * @return
+     */
     @Override
-    public double getPrecioBase() throws AlquilerVehiculosException{
+    public double getPrecioBase() {
         return (0.5 * pma);
     }
 
+    /**
+     * Método que valida la pma entre dos valores.
+     * @param pma
+     * @return
+     */
     public static boolean validarPma(int pma) {
         return pma > 0 && pma <= PMA_MAXIMO;
     }
