@@ -14,7 +14,7 @@ public abstract class  Vehiculo {
             this.precioPorGama = precioPorGama;
         }
         //Creamos un getter para obtener el precio por gama.
-        public double getPrecioPorGama() {
+        public double getPrecioPorDia() {
             return precioPorGama;
         }
     }
@@ -68,9 +68,7 @@ public abstract class  Vehiculo {
      * El precio base es el retorno de precio por gama.
      * @return gama.getPrecioPorGama();
      */
-    public double getPrecioBase(){
-        return gama.getPrecioPorGama();
-    }
+
 
     /**
      * Este método se encarga de calcular el precio por dia
@@ -78,11 +76,15 @@ public abstract class  Vehiculo {
      * @return
      * @throws AlquilerVehiculosException
      */
-    public static double getPrecioPorDia(int numDias) throws AlquilerVehiculosException {
+    public double getPrecioPorDia(int numDias) throws AlquilerVehiculosException {
         if(numDias < 1){
             throw new AlquilerVehiculosException("Error el alquiler del vehiculo no puede ser 0 dias. ");
         }
-        return gama.getPrecioPorGama()*numDias;
+        return gama.getPrecioPorDia()*numDias;
+    }
+
+    public double getPrecioBase() throws AlquilerVehiculosException {
+        return gama.getPrecioPorDia();
     }
 
     @Override

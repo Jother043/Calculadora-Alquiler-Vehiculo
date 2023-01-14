@@ -1,7 +1,7 @@
 import EntradaSalida.Lectora;
 
 import java.util.Arrays;
-import java.util.Locale;
+
 
 public class Main {
     private static final int MAX_VEHICULOS = 200;
@@ -9,7 +9,7 @@ public class Main {
     private static final Vehiculo[] listaVehiculos = new Vehiculo[MAX_VEHICULOS];
 
     public static void main(String[] args) {
-        int opciones = 0;
+        int opciones;
         do {
             System.out.println(menu());
             opciones = Lectora.leerEnteroDeRango("Introduce la opción deseada. ", 4, 0);
@@ -46,7 +46,6 @@ public class Main {
         while (!correcto) {
             tipoVehiculo = Lectora.solicitarCadenaMinus("Indica el tipo de vehiculo que quieres dar " +
                     "de alta [ coche, microbús, furgoneta ]");
-            tipoVehiculo.toUpperCase();
             switch (tipoVehiculo) {
                 case "coche":
                 case "microbus":
@@ -69,7 +68,7 @@ public class Main {
          */
         correcto = false;
         Vehiculo.GamaCoche gamaVehiculo = null;
-        String gama = "";
+        String gama;
         while (!correcto) {
             gama = Lectora.solicitarCadenaMayus("Introduce la gama de vehiculo a elegir " +
                     Arrays.toString(Vehiculo.GamaCoche.values()));
@@ -115,6 +114,7 @@ public class Main {
                     }
                     Vehiculo microBus = new Microbus(gamaVehiculo, tipoCarburante, matricula, numPlazas);
                     addVehiculo(microBus);
+                    break;
                 case "furgoneta":
                     correcto = false;
                     int pma = 0;
@@ -126,11 +126,16 @@ public class Main {
                     }
                     Vehiculo furgoneta = new Furgoneta(gamaVehiculo, tipoCarburante, matricula, pma);
                     addVehiculo(furgoneta);
+                    break;
             }
         }
     }
 
+    /**
+     * Este método se encarga de calcular el precio del alquiler por dia de los vehículos existente en la  lisita.
+     */
     public static void calcularPrecioVehiculo() {
+
         boolean correcto = false;
         String matricula = "";
         while (!correcto) {
@@ -139,18 +144,23 @@ public class Main {
                 correcto = true;
             }
         }
-        vehiculoBuscado(matricula);
+        //Capturamos en un try la excepción lanzada al no encontrar el vehículo seleccionado.
+        try {
+            vehiculoBuscado(matricula);
+        } catch (AlquilerVehiculosException e) {
+            System.out.println("Introduce un vehiculo existente. ");;
+        }
+
         correcto = false;
         int numDias = 0;
         while (!correcto) {
-            numDias = Lectora.leerEnteroPositivo("Introduce la matricula del vehiculo. ");
+            numDias = Lectora.leerEnteroPositivo("Introduce el número de dias del alquiler. ");
             if (numDias > 0) {
                 correcto = true;
             }
         }
-
         try {
-            System.out.println(vehiculoBuscado(matricula).getPrecioPorDia(numDias));
+            System.out.println(vehiculoBuscado(matricula).getPrecioBase()+vehiculoBuscado(matricula).getPrecioPorDia(numDias));
         } catch (AlquilerVehiculosException e) {
             e.printStackTrace();
         }
@@ -170,7 +180,7 @@ public class Main {
         }
     }
 
-    public static Vehiculo vehiculoBuscado(String matricula) {
+    public static Vehiculo vehiculoBuscado(String matricula) throws AlquilerVehiculosException {
         boolean encontrado = false;
         Vehiculo vehiculoPrecio = null;
         for (int i = 0; i < listaVehiculos.length && !encontrado; i++) {
@@ -178,17 +188,19 @@ public class Main {
                 vehiculoPrecio = listaVehiculos[i];
                 encontrado = true;
 
+            }else{
+                throw new AlquilerVehiculosException("Introduce un vehiculo existente.");
             }
         }
         return vehiculoPrecio;
     }
 
     public static String menu() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Elige una opción: ").append("\n");
-        sb.append("1. Alta vehiculo ").append("\n");
-        sb.append("2. Cálculo del precio del alquiler ").append("\n");
-        sb.append("3. Salir");
-        return sb.toString();
+        StringBuilder string = new StringBuilder();
+        string.append("Elige una opción: ").append("\n");
+        string.append("1. Alta vehiculo ").append("\n");
+        string.append("2. Cálculo del precio del alquiler ").append("\n");
+        string.append("3. Salir");
+        return string.toString();
     }
 }

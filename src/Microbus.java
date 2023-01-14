@@ -8,13 +8,14 @@ public class Microbus extends Vehiculo{
             super(gama, carburante, matricula);
 
             if (!validarPlazas(plazas)) {
-                throw new AlquilerVehiculosException("Error el peso . ");
+                throw new AlquilerVehiculosException("Error las plazas seleccionadas deben de ser mayor a 0 . ");
             }
             this.plazas = plazas;
         }
 
-        public double getPrecioPlazas() {
-            return super.getPrecioBase() + (5 * plazas);
+        @Override
+        public  double getPrecioBase() throws AlquilerVehiculosException {
+            return (5 * plazas);
         }
 
         public static boolean validarPlazas(int plazas) {

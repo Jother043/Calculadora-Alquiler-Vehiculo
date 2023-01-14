@@ -12,8 +12,9 @@ public class Furgoneta extends Vehiculo {
         this.pma = pma;
     }
 
-    public double getPrecioPma() {
-        return super.getPrecioBase() + (0.5 * pma);
+    @Override
+    public double getPrecioBase() throws AlquilerVehiculosException{
+        return (0.5 * pma);
     }
 
     public static boolean validarPma(int pma) {
