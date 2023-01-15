@@ -67,9 +67,15 @@ public class Main {
         correcto = false;
         String matricula = "";
         while (!correcto) {
-            matricula = Lectora.solicitarCadenaMayus("Introduce la matricula del vehiculo. ");
-            if (!matricula.trim().isEmpty()) {
-                correcto = true;
+            //Creamos un try Catch para contemplar que no contenga ningún carácter nulo
+            try {
+                matricula = Lectora.solicitarCadenaMayus("Introduce la matricula del vehiculo. ");
+                verificarMatricula(matricula);
+                if (!matricula.trim().isEmpty()) {
+                    correcto = true;
+                }
+            }catch (AlquilerVehiculosException e){
+                System.out.println("Algo salió mal al introducir la matricula");
             }
         }
 
@@ -116,13 +122,13 @@ public class Main {
 
         }
         /*
-        Creamos un switch que dependiendo el tipoVehiculo que le gue le hemos pasado hará unas cosas en cada caso.
+        Creamos un switch que dependiendo el tipoVehiculo que le hemos pasado hará unas cosas en cada caso.
         Caso coche: hacemos un new de Vehículo, pero como esta es una clase abstracta tenemos que poner Vehículo v = new
         Coche, si no nos daria un error al generarlo y tampoco nos estaríamos refiriendo a nada, si no recuerdo mal se llamaba
         upCasting
         Caso microbús: nos pide el número de plazas que tiene que tener el bus una vez hemos verificado que es correcto
         el número de plazas vamos a generar el microbús y lo añadiremos a la lista.
-        Caso de furgoneta: Nos indica que introduzcamos el precio máximo una vez introducido verificamos que es correcto
+        Caso de furgoneta: Nos indica que introduzcamos el precio máximo una vez introducido revisamos que es correcto
         y añadimos el vehículo en cuestión.
          */
         switch (tipoVehiculo) {
@@ -159,6 +165,28 @@ public class Main {
     }
 
     /**
+     * Este método verifica si hay una matrícula igual a la que le hemos pasado por para metro ya introducido.
+     * @param matricula
+     * @throws AlquilerVehiculosException
+     */
+    public static void verificarMatricula(String matricula) throws AlquilerVehiculosException{
+        /*
+        Hacemos un doble for para verificar todos y cada uno de los espacios de la lista.
+        Si hubiera solo un for, solo contemplaría que el primero no sea igual a la matrícula introducida.
+        Por lo tanto, si introducimos después del primer vehículo dos más, se podría repetir contraseña
+         */
+        for (int j = 0; j < listaVehiculos.length; j++) {
+            for (int i = 0; i < listaVehiculos.length; i++) {
+                if (listaVehiculos[j] != null) {
+                    if (listaVehiculos[j].getMatricula().equals(matricula)) {
+                        throw new AlquilerVehiculosException("No puedes introducir dos vehiculos con la misma matricula");
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Este método se encarga de calcular el precio del alquiler por dia de los vehículos existente en la  lisita.
      */
     public static void calcularPrecioVehiculo() {
@@ -179,6 +207,10 @@ public class Main {
         //Indicamos el número de dias que va a alquilar el coche.
         int numDias = 0;
         numDias = Lectora.leerEnteroPositivo("Introduce el número de dias del alquiler. ");
+        /*
+        Al ser Leer entero positivo entonces controlamos que sea siempre positivo y si no lo fuera controlamos
+        (capturamos) la excepción
+         */
         try {
             System.out.println(vehiculoBuscado(matricula).getPrecioBase() + vehiculoBuscado(matricula).getPrecioPorDia(numDias));
         } catch (AlquilerVehiculosException e) {
@@ -199,8 +231,10 @@ public class Main {
                 espacio = true;
                 listaVehiculos[i] = vehiculo;
             }
+
         }
     }
+
 
     //Imprimimos la lista.
     public static void imprimir() {
@@ -214,6 +248,7 @@ public class Main {
 
     /**
      * Método que nos busca el vehículo por matrícula.
+     *
      * @param matricula
      * @return
      * @throws AlquilerVehiculosException
@@ -222,15 +257,19 @@ public class Main {
         boolean encontrado = false;
         Vehiculo vehiculoPrecio = null;
         /*
-        Recorremos el array de vehículos y buscamos que el vehículo "i" su matrícula es igual a la introducida
-        procedemos al siguiente paso, si no lanzamos una excepción.
+        Recorremos dos veces el array de vehículos para comparar las matrículas y que no solo nos encuentre el primero.
+        Cuando el valor es nulo, es decir no hay ninguna coincidencia con la matrícula lanzaremos una excepción.
          */
-        for (int i = 0; i < listaVehiculos.length && !encontrado; i++) {
-            if (listaVehiculos[i].getMatricula().equals(matricula)) {
-                vehiculoPrecio = listaVehiculos[i];
-                encontrado = true;
-            } else {
-                throw new AlquilerVehiculosException("Introduce un vehiculo existente.");
+        for (int i = 0; i < listaVehiculos.length; i++) {
+            for (int j = 0; j < listaVehiculos.length && !encontrado; j++) {
+                if (listaVehiculos[i] != null) {
+                    if (listaVehiculos[i].getMatricula().equals(matricula)) {
+                        vehiculoPrecio = listaVehiculos[i];
+                        encontrado = true;
+                    }
+                } else {
+                    throw new AlquilerVehiculosException("Introduce un vehiculo existente.");
+                }
             }
         }
         return vehiculoPrecio;

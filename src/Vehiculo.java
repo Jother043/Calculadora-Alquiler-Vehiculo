@@ -38,18 +38,10 @@ public abstract class  Vehiculo {
     Creamos el constructor de Vehículo y controlaremos que matricula no sea null o matrícula quitando el espacio o está
     vacío, y después que gama y carburante no sean nulos.
      */
-    public Vehiculo(GamaCoche gama, Carburante carburante, String matricula) throws AlquilerVehiculosException {
+    public Vehiculo(GamaCoche gama, Carburante carburante, String matricula){
         this.gama = gama;
         this.carburante = carburante;
         this.matricula = matricula;
-
-        if(matricula == null || matricula.trim().isEmpty()){
-            throw new AlquilerVehiculosException("Error falta matricula del vehiculo. ");
-        }
-
-        if(gama == null || carburante == null){
-            throw new AlquilerVehiculosException("Error hay datos que no se han contemplado. ");
-        }
     }
 
     public GamaCoche getGama() {
@@ -78,10 +70,7 @@ public abstract class  Vehiculo {
      * @return
      * @throws AlquilerVehiculosException
      */
-    public double getPrecioPorDia(int numDias) throws AlquilerVehiculosException {
-        if(numDias < 1){
-            throw new AlquilerVehiculosException("Error el alquiler del vehiculo no puede ser 0 dias. ");
-        }
+    public double getPrecioPorDia(int numDias){
         return gama.getPrecioPorDia()*numDias;
     }
 
