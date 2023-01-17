@@ -2,14 +2,12 @@ public class Microbus extends Vehiculo{
 
 
         private static final int PLAZAS_MAX = 16;
+        private static final double PRECIO_PLAZAS = 5;
         private static int plazas;
 
         public Microbus(GamaCoche gama, Carburante carburante, String matricula, int plazas) throws AlquilerVehiculosException {
             super(gama, carburante, matricula);
 
-            if (!validarPlazas(plazas)) {
-                throw new AlquilerVehiculosException("Error las plazas seleccionadas deben de ser mayor a 0 . ");
-            }
             this.plazas = plazas;
         }
 
@@ -18,8 +16,8 @@ public class Microbus extends Vehiculo{
      * @return
      */
     @Override
-        public  double getPrecioBase()  {
-            return (5 * plazas);
+        public  double getPrecioBase(){
+            return super.getPrecioBase() + (PRECIO_PLAZAS * plazas);
         }
 
     /**

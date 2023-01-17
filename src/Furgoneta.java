@@ -1,14 +1,12 @@
 public class Furgoneta extends Vehiculo {
 
     private static final int PMA_MAXIMO = 3500;
+    private static final double PRECIO_PMA = 0.5;
     private static int pma;
 
     public Furgoneta(GamaCoche gama, Carburante carburante, String matricula, int pma) throws AlquilerVehiculosException {
         super(gama, carburante, matricula);
         //Si el método validar retorna falso entonces nos lanzara una excepción
-        if (!validarPma(pma)) {
-            throw new AlquilerVehiculosException("Error el peso maximo autorizado no puede ser 0. ");
-        }
         this.pma = pma;
     }
 
@@ -18,8 +16,8 @@ public class Furgoneta extends Vehiculo {
      * @return
      */
     @Override
-    public double getPrecioBase() {
-        return (0.5 * pma);
+    public double getPrecioBase(){
+        return super.getPrecioBase() + (PRECIO_PMA * pma);
     }
 
     /**

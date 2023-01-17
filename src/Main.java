@@ -22,9 +22,9 @@ public class Main {
             case 1:
                 //Llamada al método darDealtaVehiculo.
                 try {
-                    darDealtaVehiculo();
+                    darDeAltaVehiculo();
                 } catch (AlquilerVehiculosException e) {
-                    System.out.println("Error al ingresar vehiculo, algo falló. ");
+                    System.err.println("Error al ingresar vehiculo, algo falló. ");
                     e.printStackTrace();
                 }
                 break;
@@ -33,7 +33,7 @@ public class Main {
                 try {
                     calcularPrecioVehiculo();
                 } catch (IllegalArgumentException e) {
-                    System.out.println("Error al calcular precio del vehiculo, algo falló. ");
+                    System.err.println("Error al calcular precio del vehiculo, algo falló. ");
                     e.printStackTrace();
                 }
                 break;
@@ -43,7 +43,7 @@ public class Main {
         }
     }
 
-    public static void darDealtaVehiculo() throws AlquilerVehiculosException {
+    public static void darDeAltaVehiculo() throws AlquilerVehiculosException {
 
         boolean correcto = false;
         String tipoVehiculo = "";
@@ -74,8 +74,8 @@ public class Main {
                 if (!matricula.trim().isEmpty()) {
                     correcto = true;
                 }
-            }catch (AlquilerVehiculosException e){
-                System.out.println("Algo salió mal al introducir la matricula");
+            } catch (AlquilerVehiculosException e) {
+                System.err.println("Algo salió mal al introducir la matricula");
             }
         }
 
@@ -96,7 +96,7 @@ public class Main {
                 gamaVehiculo = Vehiculo.GamaCoche.valueOf(gama);
                 correcto = true;
             } catch (IllegalArgumentException e) {
-                System.out.println("Error el valor introducido es incorrecto");
+                System.err.println("Error el valor introducido es incorrecto");
             }
         }
         /*
@@ -117,7 +117,7 @@ public class Main {
                 tipoCarburante = Vehiculo.Carburante.valueOf(carburante);
                 correcto = true;
             } catch (IllegalArgumentException e) {
-                System.out.println("Error el valor introducido es incorrecto");
+                System.err.println("Error el valor introducido es incorrecto");
             }
 
         }
@@ -166,10 +166,11 @@ public class Main {
 
     /**
      * Este método verifica si hay una matrícula igual a la que le hemos pasado por para metro ya introducido.
+     *
      * @param matricula
      * @throws AlquilerVehiculosException
      */
-    public static void verificarMatricula(String matricula) throws AlquilerVehiculosException{
+    public static void verificarMatricula(String matricula) throws AlquilerVehiculosException {
         /*
         Hacemos un doble for para verificar todos y cada uno de los espacios de la lista.
         Si hubiera solo un for, solo contemplaría que el primero no sea igual a la matrícula introducida.
@@ -193,29 +194,23 @@ public class Main {
 
         boolean correcto = false;
         String matricula = "";
+        Vehiculo v = null;
         //Si la matricula es correcta el while se acaba.
         while (!correcto) {
             matricula = Lectora.solicitarCadenaMayus("Introduce la matricula del vehiculo. ");
             //Verificamos que la matrícula sea correcta y exista dentro de la lista de vehículos.
             try {
-                vehiculoBuscado(matricula);
+                v = vehiculoBuscado(matricula);
                 correcto = true;
             } catch (AlquilerVehiculosException e) {
-                System.out.println("Introduce un vehiculo existente. ");
+                System.err.println("Introduce un vehiculo existente. ");
             }
         }
         //Indicamos el número de dias que va a alquilar el coche.
-        int numDias = 0;
-        numDias = Lectora.leerEnteroPositivo("Introduce el número de dias del alquiler. ");
-        /*
-        Al ser Leer entero positivo entonces controlamos que sea siempre positivo y si no lo fuera controlamos
-        (capturamos) la excepción
-         */
-        try {
-            System.out.println(vehiculoBuscado(matricula).getPrecioBase() + vehiculoBuscado(matricula).getPrecioPorDia(numDias));
-        } catch (AlquilerVehiculosException e) {
-            System.out.println("Error al imprimir el costo del alquiler del coche seleccionado. ");
-        }
+        int numDias = Lectora.leerEnteroPositivo("Introduce el número de dias del alquiler. ");
+
+        System.out.println(v.getPrecioTotal(numDias));
+
     }
 
     /**
@@ -255,7 +250,7 @@ public class Main {
      */
     public static Vehiculo vehiculoBuscado(String matricula) throws AlquilerVehiculosException {
         boolean encontrado = false;
-        Vehiculo vehiculoPrecio = null;
+        Vehiculo vehiculoBuscado = null;
         /*
         Recorremos dos veces el array de vehículos para comparar las matrículas y que no solo nos encuentre el primero.
         Cuando el valor es nulo, es decir no hay ninguna coincidencia con la matrícula lanzaremos una excepción.
@@ -264,7 +259,7 @@ public class Main {
             for (int j = 0; j < listaVehiculos.length && !encontrado; j++) {
                 if (listaVehiculos[i] != null) {
                     if (listaVehiculos[i].getMatricula().equals(matricula)) {
-                        vehiculoPrecio = listaVehiculos[i];
+                        vehiculoBuscado = listaVehiculos[i];
                         encontrado = true;
                     }
                 } else {
@@ -272,7 +267,7 @@ public class Main {
                 }
             }
         }
-        return vehiculoPrecio;
+        return vehiculoBuscado;
     }
 
     public static String menu() {

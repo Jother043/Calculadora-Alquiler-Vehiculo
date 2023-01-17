@@ -23,7 +23,16 @@ public abstract class  Vehiculo {
     Creamos un enum de carburante, para indicar que tipo de carburante hemos seleccionado.
      */
     public enum Carburante{
-        GASOIL, GASOLINA;
+        GASOIL(2), GASOLINA(3.5);
+        private double precioCarburante;
+
+        Carburante(double precioCarburante){
+            this.precioCarburante = precioCarburante;
+        }
+
+        public double getPrecioCarburante() {
+            return precioCarburante;
+        }
     }
 
     /*
@@ -60,8 +69,8 @@ public abstract class  Vehiculo {
      * Método abstracto.
      * @return getPrecioBase();
      */
-    public double getPrecioBase() throws AlquilerVehiculosException {
-        return  getPrecioBase();
+    public double getPrecioBase(){
+        return gama.getPrecioPorDia() + carburante.getPrecioCarburante();
     }
 
     /**
@@ -70,8 +79,8 @@ public abstract class  Vehiculo {
      * @return
      * @throws AlquilerVehiculosException
      */
-    public double getPrecioPorDia(int numDias){
-        return gama.getPrecioPorDia()*numDias;
+    public double getPrecioTotal(int numDias){
+        return getPrecioBase()*numDias;
     }
 
     @Override
